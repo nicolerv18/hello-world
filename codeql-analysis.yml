@@ -2,11 +2,14 @@ name: "CodeQL"
 
 on:
   push:
-    branches: [main]
+    branches: [main, protected]
   pull_request:
     branches: [main]
+    paths-ignore:
+      - '**/*.md'
+      - '**/*.txt'
   schedule:
-    - cron: '0 0 * * 0'  # Escaneo semanal
+    - cron: '0 0 * * 0'  # Escaneo semanal (domingo a medianoche)
 
 jobs:
   analyze:
@@ -15,9 +18,11 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
+
       - name: Initialize CodeQL
         uses: github/codeql-action/init@v2
         with:
-          languages: javascript  # Cambia esto según tu stack
+          languages: javascript  # Cambia esto por el lenguaje que uses
+
       - name: Perform CodeQL Analysis
         uses: github/codeql-action/analyze@v2
